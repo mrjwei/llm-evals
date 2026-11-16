@@ -1,0 +1,27 @@
+{
+  "$comment": "Format B (minimal schema, Plan P2.6): the four decision fields of Format A, in the same order and with the same descriptions. \"x-cjp-enum\" is replaced by the enum from taxonomy/labels.yaml when the schema is rendered (cjp/triage/schema.py). The descriptions are listed in the system prompt and left out of the schema sent.",
+  "type": "object",
+  "properties": {
+    "technique_label": {
+      "type": "string",
+      "x-cjp-enum": "technique_label",
+      "description": "Exactly one value from the technique label list: a label, none, other or uncertain."
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["escalate", "dismiss_false_positive", "needs_more_info"],
+      "description": "What should happen to this alert."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "How strongly the evidence in this alert supports technique_label and disposition."
+    },
+    "recommended_action": {
+      "type": "string",
+      "description": "1-2 sentences: the specific next step for the analyst, which fits the disposition."
+    }
+  },
+  "required": ["technique_label", "disposition", "confidence", "recommended_action"],
+  "additionalProperties": false
+}

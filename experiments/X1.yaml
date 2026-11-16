@@ -1,0 +1,15 @@
+# Plan §1.3. Frozen with tag prereg-C1 (Plan P4, decision 011): a change needs a new decision record.
+# Condition = <SIEM evidence>__<LLM evidence>__<format>__<model alias> (cjp/experiment.py;
+# aliases in config/settings.yaml). The main experiment: richer evidence on the SIEM side
+# (S2, S3) or the LLM side (L1), all in format A on the triage model.
+id: X1
+slug: evidence
+question: How does evidence change correctness, coverage, disposition and calibration?
+rq: [RQ1, RQ2]
+corpus: C1
+reps: 3
+conditions:
+  - S1-plain__L0-alert__FA__sonnet
+  - S1-plain__L1-alert+body__FA__sonnet
+  - S2-body-in-url__L0-alert__FA__sonnet
+  - S3-body-field__L0-alert__FA__sonnet

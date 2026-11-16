@@ -1,0 +1,55 @@
+{
+  "$comment": "Format A (full schema, Plan P2.6). JSON Schema for output_config.format. \"x-cjp-enum\" is replaced by the enum from taxonomy/labels.yaml when the schema is rendered (cjp/triage/schema.py) and never reaches the API. The descriptions are listed in the system prompt and left out of the schema sent. Property order is generation order: the decision fields come first, in the same order as Format B, so A and B differ only in what follows them.",
+  "type": "object",
+  "properties": {
+    "technique_label": {
+      "type": "string",
+      "x-cjp-enum": "technique_label",
+      "description": "Exactly one value from the technique label list: a label, none, other or uncertain."
+    },
+    "candidate_labels": {
+      "type": "array",
+      "items": {"type": "string", "x-cjp-enum": "candidate_label"},
+      "description": "Only when technique_label is uncertain: every label (two or more) that the evidence still fits. Otherwise an empty list."
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["escalate", "dismiss_false_positive", "needs_more_info"],
+      "description": "What should happen to this alert."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "How strongly the evidence in this alert supports technique_label and disposition."
+    },
+    "recommended_action": {
+      "type": "string",
+      "description": "1-2 sentences: the specific next step for the analyst, which fits the disposition."
+    },
+    "event_type": {
+      "type": "string",
+      "description": "5 words max: a readable name for what happened."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["critical", "high", "medium", "low"],
+      "description": "Potential impact if the activity is what it appears to be."
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "2 sentences max: why, citing the evidence that decided it, or the missing evidence that would."
+    },
+    "evidence": {
+      "type": "string",
+      "description": "Comma-separated key fields from the alert that support the decision (e.g. method, path, status, rule, body excerpt)."
+    },
+    "cognitive_notes": {
+      "type": "string",
+      "description": "1 sentence: context the analyst needs that is not in the alert."
+    }
+  },
+  "required": ["technique_label", "candidate_labels", "disposition", "confidence",
+               "recommended_action", "event_type", "severity", "reasoning", "evidence",
+               "cognitive_notes"],
+  "additionalProperties": false
+}

@@ -1,0 +1,10 @@
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:00Z", "event": "session_start"}
+{"kind": "attack", "session": "20990101_000000", "timestamp": "2099-01-01T00:00:01Z", "attack_seq": 1, "category": "A01", "label": "idor", "description": "d", "url": "/rest/basket/*"}
+{"kind": "request", "cid": "wp1-20990101_000000-1-1", "session": "20990101_000000", "attack_seq": 1, "req_seq": 1, "category": "A01", "label": "idor", "method": "GET", "url": "/rest/basket/1", "status": "401", "t_start": "2099-01-01T00:00:01.000Z", "t_end": "2099-01-01T00:00:01.100Z"}
+{"kind": "request", "cid": "wp1-20990101_000000-1-2", "session": "20990101_000000", "attack_seq": 1, "req_seq": 2, "category": "A01", "label": "idor", "method": "GET", "url": "/rest/basket/2", "status": "401", "t_start": "2099-01-01T00:00:02.000Z", "t_end": "2099-01-01T00:00:02.100Z"}
+{"kind": "attack", "session": "20990101_000000", "timestamp": "2099-01-01T00:00:10Z", "attack_seq": 2, "category": "A01", "label": "path_traversal", "description": "d", "url": "/ftp/../etc/passwd"}
+{"kind": "request", "cid": "wp1-20990101_000000-2-1", "session": "20990101_000000", "attack_seq": 2, "req_seq": 1, "category": "A01", "label": "path_traversal", "method": "GET", "url": "/ftp/../etc/passwd", "status": "403", "t_start": "2099-01-01T00:00:10.000Z", "t_end": "2099-01-01T00:00:10.100Z"}
+{"kind": "attack", "session": "20990101_000000", "timestamp": "2099-01-01T00:00:20Z", "attack_seq": 3, "category": "A05", "label": "sql_injection", "description": "d", "url": "/rest/user/login"}
+{"kind": "request", "cid": "wp1-20990101_000000-3-1", "session": "20990101_000000", "attack_seq": 3, "req_seq": 1, "category": "A05", "label": "sql_injection", "method": "POST", "url": "/rest/user/login", "status": "200", "t_start": "2099-01-01T00:00:20.000Z", "t_end": "2099-01-01T00:00:21.000Z"}
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:30Z", "event": "session_end"}
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:31Z", "event": "session_manifest", "application_logging": true}

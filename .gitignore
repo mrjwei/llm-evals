@@ -1,0 +1,58 @@
+# macOS
+.DS_Store
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyc.*
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments
+venv/
+.venv/
+env/
+ENV/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Generated pipeline artifacts
+outputs/
+sessions/
+
+# Packaging / build outputs
+build/
+dist/
+*.egg-info/
+
+test*.sh
+
+CLAUDE.local.md
+/docs/PROGRESS.md
+# Claude Code: personal commands and settings stay local; the three pipeline
+# commands (Plan P2.9, thin wrappers over cjp) are tracked.
+.claude/*
+!.claude/commands/
+.claude/commands/*
+!.claude/commands/doctor.md
+!.claude/commands/new-session.md
+!.claude/commands/run-experiment.md
+.obsidian/
+
+# Research data (Plan §2.2): sessions, corpus, runs, cache, ratings, triage jobs, legacy evidence
+data/
+
+# Web UI (Plan P6): npm packages; the build (web/ui/dist/) is covered by dist/ above
+node_modules/
+
+# Built results stay out of the public repo until the paper is published (results/README.md)
+results/tables/*
+!results/tables/H1_heuristic.csv
+results/figures/
+results/manifest.json

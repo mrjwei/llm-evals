@@ -1,0 +1,13 @@
+# Plan §1.3. Frozen with tag prereg-C1 (Plan P4, decision 011): a change needs a new decision record.
+# The cheaper model on X1's S1 conditions; compared with X1 (same conditions on the
+# triage model) and with the X0 baselines. haiku = claude-haiku-4-5-20251001
+# (config/settings.yaml; no thinking field, no effort: decision 007).
+id: X3
+slug: model
+question: Where does a cheaper model sit on the cost–quality curve?
+rq: [RQ1, RQ2]
+corpus: C1
+reps: 3
+conditions:
+  - S1-plain__L0-alert__FA__haiku
+  - S1-plain__L1-alert+body__FA__haiku

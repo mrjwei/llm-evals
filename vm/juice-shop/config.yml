@@ -1,0 +1,49 @@
+server:
+  port: 3000
+application:
+  name: 'OWASP Juice Shop'
+  logo: 'JuiceShopCTF_Logo.png'
+  theme: 'bluegrey-lightgreen'
+  showGitHubLinks: true
+  numberOfRandomFakeUsers: 0
+  customMetricsPrefix: 'juiceshop'
+  gitHubOrg: 'juice-shop'
+  altpayUrl: 'https://www.alchemy.com'
+  chatBot:
+    name: 'Juicy'
+    greeting: 'Oh hi, welcome to the Juice Shop.'
+    trainingData: 'botDefaultTrainingData.json'
+    defaultResponse: 'Sorry I couldn''t understand what you were trying to say. Maybe you should try being more specific?'
+    avatar: 'assets/public/images/JuicyChatBot.png'
+  social:
+    twitterUrl: 'https://twitter.com/owasp_juiceshop'
+    facebookUrl: 'https://www.facebook.com/owasp.juiceshop'
+    slackUrl: 'https://owasp.slack.com/messages/project-juiceshop'
+    redditUrl: 'https://www.reddit.com/r/owasp_juiceshop'
+    pressKitUrl: 'https://github.com/juice-shop/juice-shop/releases/download/v13.3.0/OWASP_Juice_Shop-Media_Press_Kit.zip'
+    questionnaireUrl: 'https://forms.gle/2Tr5m1pqnnesApxN8'
+    googleGroupUrl: 'https://groups.google.com/a/owasp.org/forum/#!forum/juice-shop-project'
+    gitHubUrl: 'https://github.com/juice-shop/juice-shop'
+  recyclePage:
+    topProductImage: 'recycling_box.jpg'
+    bottomProductImage: 'fruit_press.jpg'
+  welcomeBanner:
+    showOnFirstStart: true
+    title: 'Welcome to OWASP Juice Shop!'
+    message: "..."
+  cookieConsent:
+    cookieName: 'cookieconsent_status'
+    cookieValue: 'dismiss'
+    layout: 'bar'
+    message: 'This website uses cookies.'
+    dismissText: 'Got it!'
+challenges:
+  showHints: true
+  showMitigations: true
+  safetyMode: 'disabled'
+hackingInstructor:
+  isEnabled: true
+products: []
+memories: []
+ctf:
+  showFlagsInNotifications: false

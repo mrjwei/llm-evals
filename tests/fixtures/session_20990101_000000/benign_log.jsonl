@@ -1,0 +1,5 @@
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:32Z", "event": "session_start"}
+{"kind": "request", "cid": "wp1-benign-20990101_000000-1-1", "session": "20990101_000000", "attack_seq": 1, "req_seq": 1, "category": "BENIGN", "label": "browse_catalogue", "method": "GET", "url": "/rest/products", "status": "500", "t_start": "2099-01-01T00:00:33.000Z", "t_end": "2099-01-01T00:00:33.100Z"}
+{"kind": "request", "cid": "wp1-benign-20990101_000000-2-1", "session": "20990101_000000", "attack_seq": 2, "req_seq": 1, "category": "BENIGN", "label": "search", "method": "GET", "url": "/rest/products/search?q=apple", "status": "200", "t_start": "2099-01-01T00:00:34.000Z", "t_end": "2099-01-01T00:00:34.100Z"}
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:40Z", "event": "session_end"}
+{"session": "20990101_000000", "timestamp": "2099-01-01T00:00:41Z", "event": "session_manifest", "application_logging": true}

@@ -1,0 +1,33 @@
+<!--
+  Wazuh agent <localfile> blocks for the three log sources (S1, S2, S3).
+  Paste into the <ossec_config> of the VM agent's /var/ossec/etc/ossec.conf
+  (sudo), then: sudo systemctl restart wazuh-agent
+
+  Transcribed on 2026-09-30 (Plan P1.4) from the live agent config archived
+  in _archive/2026-09-30_pre-cleanup/vm_agent_etc.tar.zst. The agent's other
+  six <localfile> blocks (df, netstat, last, journald, active-responses.log,
+  dpkg.log) are the package defaults and are not part of this project.
+
+  Paths point at ~/cjp-vm, where `cjp vm deploy` puts vm/ (Plan P2.2). Until
+  30 Sep they pointed at the old checkout ~/juice-shop-wazuh; `cjp vm deploy`
+  reads the agent's live config through the manager API and prints the one
+  sudo command that repoints it if they differ.
+-->
+
+<!-- S1-plain: Juice Shop's own access log -->
+<localfile>
+  <log_format>apache</log_format>
+  <location>/home/jesse/cjp-vm/juice-shop/data/logs/access.log*</location>
+</localfile>
+
+<!-- S2-body-in-url: proxy log with the request body appended to the URL -->
+<localfile>
+  <log_format>apache</log_format>
+  <location>/home/jesse/cjp-vm/juice-shop/data/logs/enriched_access.log*</location>
+</localfile>
+
+<!-- S3-body-field: proxy "body_probe" lines, read by the custom decoder in decoders/ -->
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/home/jesse/cjp-vm/juice-shop/data/logs/body_field_access.log*</location>
+</localfile>

@@ -4,7 +4,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Status
 
-The repo only has `README.md` so far. It has no code, dependencies, build, lint or test setup yet. Update this file once those exist.
+Public copy of the capstone pipeline (`cjp` package, `vm/`, `web/`, tests, method docs). Results, research data, the internal plan and the work log are deliberately not in this repo: never add `results/tables/*` (except the unscored `H1_heuristic.csv` template), `results/figures/`, `results/manifest.json`, `data/`, `.env` or supervisor-identifying details until the paper is published. "Plan §…" references point to the private working repo.
+
+- Setup and tests: `uv sync`, `uv run pytest` (offline, no API calls, no VM). `tests/test_experiment.py::test_freeze_copies_checksums_and_locks` and `tests/test_collect_and_runs.py::test_deployed_vm_differs` fail when run as root.
+- How things run: `docs/RUNBOOK.md`. How they are built: `docs/ARCHITECTURE.md`. The pre-registered method: `docs/METHODS.md`.
 
 ## Purpose
 

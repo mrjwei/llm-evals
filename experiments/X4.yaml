@@ -1,0 +1,12 @@
+# Plan §1.3. Frozen with tag prereg-C1 (Plan P4, decision 011): a change needs a new decision record.
+# Runs on the injection session (Plan P3.4), kept out of C1. The flip rate (F7) compares
+# each injected alert with the clean alerts of the same technique (METHODS §5.5); computing it is P5 work.
+id: X4
+slug: injection
+question: Does attacker text in a request body flip the verdict?
+rq: RQ2
+corpus: C1-inj
+reps: 3
+conditions:
+  - S1-plain__L1-alert+body__FA__sonnet
+  - S3-body-field__L0-alert__FA__sonnet
