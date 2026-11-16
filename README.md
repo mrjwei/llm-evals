@@ -84,8 +84,15 @@ Each experiment is one YAML file in [`experiments/`](experiments/), run end to e
 
 The output schema is treated as a design variable, not a fixed implementation detail. Both formats are enforced as structured output ([prompts/](prompts/), [decision 005](docs/decisions/005-prompt-v2-and-output-formats.md)).
 
-- **Format B (short)** is the decision an analyst acts on: `technique_label`, `disposition`, `confidence`, `recommended_action`.
 - **Format A (full)** adds candidate labels, event type, severity, reasoning, cited evidence and notes on what the analyst should check.
+- **Format B (short)** is the decision an analyst acts on: `technique_label`, `disposition`, `confidence`, `recommended_action`.
+
+<figure style="text-align: center;">
+  <img width="1990" height="787" alt="fig02_format_a_vs_b" src="https://github.com/user-attachments/assets/244f3715-3d4d-422c-9e88-b3c682d8e092" />
+  <figcaption style="textAlign:left;">Left: format A; right: format B</figcaption>
+</figure>
+<br/>
+
 
 X2 tests whether the extra fields buy better or better-calibrated answers, or just cost more tokens. The expert rating and the heuristic UI review test which one an analyst can act on.
 
