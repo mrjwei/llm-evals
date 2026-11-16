@@ -1,0 +1,12 @@
+criterion,text,rater,score_FA,score_FB,observation_FA,observation_FB
+1,The number of displayed alerts is small.,A,,,,
+2,The amount of displayed alerts is appropriate.,A,,,,
+3,The quality of displayed alerts is good.,A,,,,
+4,Appropriate measures are taken for benign triggers.,A,,,,
+5,No prior knowledge of the monitored environment is required.,A,,,,
+6,The displayed information is sufficiently comprehensive.,A,,,,
+7,There are no factors that cause redundant or duplicate operations.,A,,,,
+8,Help and reference documentation are available and sufficiently detailed.,A,,,,
+9,"When an alert indicating a potential threat is displayed, the entire process from detection to escalation can be completed using only the information shown on the screen.",A,,,,
+10,"It is possible to explain, with valid reasoning, why an alert should be addressed or can be safely ignored.",A,,,,
+11,"From an interface design perspective, it is possible to distinguish between alerts that require attention and those that can be ignored.",A,,,,

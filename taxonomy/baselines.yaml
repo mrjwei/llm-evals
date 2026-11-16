@@ -1,0 +1,47 @@
+# The two lookup baselines of experiment X0 (Plan M9, P4; decision 011).
+#
+# Each baseline answers the same two questions as the LLM for every alert, a
+# technique_label (a label in labels.yaml, `none` or `uncertain`) and a
+# disposition, and is scored by the same rules (decision 006). It gives no
+# confidence, so it has no calibration. The runner, cjp/evaluate/baselines.py,
+# is P5 work; this file is what it must implement. Frozen with tag prereg-C1.
+
+version: 1
+
+# B-url-regex: the mapper's URL/method signature table (cjp/evaluate/mapper.py
+# SIGNATURES, first match wins), applied to the request line in the alert.
+# The table was written for the WP4 cross-check by people who knew the
+# testbed's endpoints, so this is a testbed-tuned lookup: an optimistic upper
+# bound for a regex baseline, not what a generic rule set would get.
+url_regex:
+  signatures: cjp/evaluate/mapper.py SIGNATURES
+  label:                         # signature label → technique_label
+    idor: idor
+    path_traversal: path_traversal
+    sensitive_data_exposure: sensitive_data_exposure
+    sql_injection_union: sql_injection
+    xss: xss
+    security_misconfiguration: security_misconfiguration
+    error_probing: forced_browsing
+    ssrf: ssrf
+    login_endpoint_probe: uncertain      # one URL shape for four techniques: abstains
+    feedback_endpoint_probe: uncertain   # one URL shape for two techniques: abstains
+  no_match: none
+  disposition: {match: escalate, no_match: dismiss_false_positive}   # `uncertain` matches, so escalates
+
+# B-rule: what Wazuh's own rule says, with no knowledge of the testbed.
+# A rule group that names a technique gives that label. Otherwise the rule
+# level decides: Wazuh classifies level 6 and above as attacks ("low relevance
+# attack" and up) and level 5 as a user-generated error.
+# Source: the Wazuh rules-classification table,
+# documentation.wazuh.com/current/user-manual/ruleset/rules/rules-classification.html
+# (checked by Jesse, 3 Oct 2026).
+rule:
+  label_by_group:
+    sql_injection: sql_injection         # stock rule 31103
+    body_field_sqli: sql_injection       # custom rule 100011 (S3 arm)
+  attack_level: 6
+  at_or_above: {label: uncertain, disposition: escalate}   # an attack, technique not named
+  below: {label: none, disposition: dismiss_false_positive}
+  # a group-named label also escalates. Aggregate (31151) and unattributed
+  # (rule 11) alerts are unscored for every condition, baselines included.

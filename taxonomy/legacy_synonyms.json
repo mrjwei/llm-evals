@@ -1,0 +1,16 @@
+{
+  "idor": ["idor", "broken access control", "bola", "object level authorization", "insecure direct object reference", "broken object level authorization", "unauthorized access", "unauthorised access", "unauthorized api access", "unauthorized basket", "unauthorized user data"],
+  "path_traversal": ["path traversal", "directory traversal", "ftp traversal", "traversal", "lfi", "local file inclusion", "../"],
+  "sensitive_data_exposure": ["sensitive data exposure", "sensitive-data-exposure", "confidential file", "exposed ftp", "data leak", "information disclosure", "exposed file", "ftp directory"],
+  "sql_injection": ["sql injection", "sql-injection", "sqli", "login bypass via sql"],
+  "sql_injection_union": ["union", "union select", "sql injection", "sqli"],
+  "xss": ["xss", "cross-site scripting", "cross site scripting", "reflected xss", "script injection", "dom xss"],
+  "security_misconfiguration": ["security misconfiguration", "security-misconfiguration", "exposed endpoint", "hidden page", "admin panel", "score board", "api docs", "swagger", "misconfiguration"],
+  "brute_force": ["brute force", "brute-force", "bruteforce", "credential stuffing"],
+  "weak_credentials": ["weak credential", "weak-credential", "default password", "default credential", "known password", "weak password"],
+  "account_enumeration": ["account enumeration", "user enumeration", "username enumeration", "enumeration"],
+  "improper_input_validation": ["improper input validation", "input validation", "zero-star", "zero star", "validation bypass"],
+  "forged_feedback": ["forged feedback", "impersonat", "userid manipulation", "user id manipulation", "forged review"],
+  "error_probing": ["error probing", "404", "reconnaissance", "probing", "endpoint enumeration", "server error"],
+  "ssrf": ["ssrf", "server-side request forgery", "server side request forgery", "internal request", "localhost request", "metadata service"]
+}

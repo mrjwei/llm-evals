@@ -1,0 +1,67 @@
+<!--
+  - Custom rule — body-field detection arm (WP4, arm 3).
+  - Points a purpose-built rule at a purpose-built field (`http_body`,
+  - from body_field_decoders.xml), independent of whatever the stock
+  - ruleset already regexes against. This is the capability the WP4
+  - rule-writing baseline and the agentic-loop prototype both need:
+  - proof a rule can inspect content stock rules never look at, not a
+  - repeat of the arm-2 url-carried-payload trick under a new field name.
+  -
+  - Keyword list in rule 100011 is copied verbatim from the stock rule
+  - 31103 (0245-web_rules.xml) — same signature, different field — so
+  - this is a controlled variable-for-variable comparison against arm 2,
+  - not confounded by also changing which keywords are being matched.
+  -
+  - 100010 was originally level 0 (Wazuh's "silent parent rule" level —
+  - never written to the alerts index), so only the 3 requests matching
+  - 100011's SQLi keywords ever became a collectible alert, versus 57/62
+  - alerts in arms 1/2 on the same session — too data-starved for a
+  - meaningful three-way comparison.
+  -
+  - 2026-09-07 (revised): the first fix tried here raised 100010 itself
+  - to level 3 unconditionally, firing on every decoded line regardless
+  - of content or status — checked against arms 1/2's own rule mix and
+  - that turned out to be a worse comparison, not a better one: 37/57 of
+  - arm 1's alerts and 34/62 of arm 2's are stock rule 31101 ("Web server
+  - 400 error code", level 5) — a pure status-code gate, no content
+  - inspection at all. Only ~19%/32% of arms 1/2's alert volume is
+  - genuinely content-signature-gated (31106/31516). So "alert on every
+  - request unconditionally" over-corrected past what arms 1/2 actually
+  - do — they still stay silent on an ordinary 200 OK request, which the
+  - unconditional version would not have.
+  -
+  - Fix: 100010 stays level 0 (pure decode confirmation, no alert).
+  - 100012 mirrors arms 1/2's dominant signal instead — a non-2xx
+  - response status, gated the same way stock 31101/31122 are — so arm 3
+  - alerts on "the same kind of coarse signal arms 1/2 mostly rely on,
+  - now on a session where the payload lives in http_body," not on
+  - literally everything. `id` is the decoder's field for HTTP status
+  - (body_field_decoders.xml's `order` line — same field name convention
+  - the stock web-accesslog decoder uses, see docs/PIPELINE.md's note on
+  - `data.id`). Level 5, matching 31101/31122's own level.
+-->
+
+<group name="body_field,">
+
+  <rule id="100010" level="0">
+    <decoded_as>body-field-probe</decoded_as>
+    <description>Body-field probe log line decoded (WP4 arm 3 baseline).</description>
+  </rule>
+
+  <rule id="100011" level="7">
+    <if_sid>100010</if_sid>
+    <field name="http_body">=select%20|select+|insert%20|%20from%20|%20where%20|union%20|union+|where+|null,null|xp_cmdshell</field>
+    <description>SQL injection attempt (request-body field).</description>
+    <mitre>
+      <id>T1190</id>
+    </mitre>
+    <group>body_field_sqli,attack,</group>
+  </rule>
+
+  <rule id="100012" level="5">
+    <if_sid>100010</if_sid>
+    <id>^4|^5</id>
+    <description>Body-field probe: non-2xx response (request-body field arm).</description>
+  </rule>
+
+</group>

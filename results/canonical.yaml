@@ -1,0 +1,75 @@
+# Which run each report figure and table comes from (Plan §2.3 rule 4,
+# decision 012). The paper cites only results/, never data/runs/.
+#
+# figures  what `cjp results build` makes: one entry per figure (F*) or table
+#          (T*), its title and the experiments it reads (`from`). Edited by
+#          hand and reviewed in git; removing an entry drops that output.
+#          `from` may also name a rating batch in data/ratings/ (F8 ← X5),
+#          which is not pinned: the build checks that it was drawn from the
+#          pinned runs and that every rater finished (decision 022).
+# pins     one canonical run per experiment, written by
+#          `cjp runs mark-canonical <run>` (the key defaults to the run's
+#          experiment). Re-pinning moves every figure that reads it.
+#
+# `cjp results build` regenerates results/figures/ and results/tables/ from
+# these pins, reading the runs' stored outputs only (no API calls), and
+# writes results/manifest.json with each output's runs and the checks.
+
+figures:
+  F1_siem_coverage:
+    title: SIEM coverage by S-level
+    from: [D1]
+  F2_coverage_selective:
+    title: Coverage vs selective accuracy
+    from: [X1]
+  F3_calibration:
+    title: Calibration and high-confidence wrong answers
+    from: [X1, X2, X3]
+  F4_disposition:
+    title: 'Disposition: escalation recall and FP dismissal'
+    from: [X1, X0]
+  F5_cost_quality:
+    title: Cost vs quality
+    from: [X0, X1, X3]
+  F6_format:
+    title: Format A vs B
+    from: [X2]
+  F7_injection:
+    title: Injection flip rate
+    from: [X4]
+  F8_rating:
+    title: Expert rating of the X5 batch (METHODS §7)
+    from: [X5]
+  T1_per_technique:
+    title: Per-technique outcomes (fine and coarse)
+    from: [X1, X0]
+  T2_contrasts:
+    title: Named contrasts (METHODS §6)
+    from: [X0, X1, X2, X3]
+
+pins:
+  D1:
+    run: D1-siem-coverage/2026-10-03T1048_07a1ad
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:36+10:00'
+    note: D1 re-run at the same commit as X0-X4; identical to e6115e except code line
+  X0:
+    run: X0-baselines/2026-10-03T1049_9788ca
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:36+10:00'
+  X1:
+    run: X1-evidence/2026-10-04T0851_c60a81
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:36+10:00'
+  X2:
+    run: X2-format/2026-10-04T1247_9bd080
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:36+10:00'
+  X3:
+    run: X3-model/2026-10-04T1351_b6fbf4
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:36+10:00'
+  X4:
+    run: X4-injection/2026-10-04T1534_d8c6be
+    git_describe: prereg-C1-4-g4e39720
+    pinned_at: '2026-10-04T17:38:37+10:00'

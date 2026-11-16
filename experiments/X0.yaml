@@ -1,0 +1,18 @@
+# Plan §1.3. Frozen with tag prereg-C1 (Plan P4, decision 011): a change needs a new decision record.
+# kind baseline: no LLM. Each condition applies one lookup baseline (Plan M9) to one SIEM
+# arm's alerts, so every X1 arm has a free comparison. The baselines are defined in
+# taxonomy/baselines.yaml; the runner (cjp/evaluate/baselines.py) is P5 work (decision 008).
+id: X0
+slug: baselines
+question: Does the LLM beat a lookup table?
+rq: RQ1
+kind: baseline
+corpus: C1
+reps: 1
+conditions:
+  - S1-plain__B-url-regex
+  - S1-plain__B-rule
+  - S2-body-in-url__B-url-regex
+  - S2-body-in-url__B-rule
+  - S3-body-field__B-url-regex
+  - S3-body-field__B-rule

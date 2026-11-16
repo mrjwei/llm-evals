@@ -1,0 +1,34 @@
+<!--
+  - Custom decoder — body-field detection arm (WP4, arm 3).
+  - Parses ingest_addon.py's `body_probe ...` log line format
+  - (data/logs/body_field_access.log.YYYY-MM-DD), decoding the
+  - percent-encoded request body into its own field, `http_body` —
+  - genuinely separate from `url` — so a custom rule can be pointed at
+  - body content specifically, instead of the arm-2 approach
+  - (enriched_access.log) of appending the body onto `url` so it rides
+  - through the *stock* decoder/rules unchanged.
+  -
+  - Deliberately NOT <type>web-log</type> and NOT a child of the stock
+  - "web-accesslog" decoder tree: this format is self-describing (starts
+  - with the literal token "body_probe", never an IP), so it can't be
+  - captured by the stock web-accesslog siblings, and it stays fully
+  - independent of the web-log category chain that 31100/31103/etc hang
+  - off of. That's what makes this a genuinely separate detection arm
+  - rather than the same trick under a new filename.
+  -
+  - Line format (see docs/2026-09-03-custom-rule-body-probe-plan.md):
+  -   body_probe cid=<cid> ip=<srcip> method=<method> path=<url> status=<status> body="<percent-encoded body>"
+  -
+  - Example:
+  -   body_probe cid=wp1-20260906_101500-4-9 ip=127.0.0.1 method=POST path=/rest/user/login status=200 body="%7B%22email%22%3A%22%27%20OR%201%3D1--%20UNION%20SELECT%20username%2C%20password%20FROM%20Users--%22%2C%22password%22%3A%22x%22%7D"
+-->
+
+<decoder name="body-field-probe">
+    <prematch>^body_probe cid=</prematch>
+</decoder>
+
+<decoder name="body-field-probe-fields">
+    <parent>body-field-probe</parent>
+    <regex>^body_probe cid=(\S+) ip=(\S+) method=(\S+) path=(\S+) status=(\d+) body="(\.*)"</regex>
+    <order>cid, srcip, protocol, url, id, http_body</order>
+</decoder>

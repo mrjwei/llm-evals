@@ -1,0 +1,13 @@
+# Plan §1.3. Frozen with tag prereg-C1 (Plan P4, decision 011): a change needs a new decision record.
+# kind siem: no LLM; each condition is one SIEM evidence arm (cjp/experiment.py).
+id: D1
+slug: siem-coverage
+question: What does each logging level let Wazuh see?
+rq: RQ1
+kind: siem
+corpus: C1
+reps: 1
+conditions:
+  - S1-plain
+  - S2-body-in-url
+  - S3-body-field

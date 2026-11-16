@@ -1,0 +1,16 @@
+# Deployed to ~/cjp-vm/juice-shop by `cjp vm deploy` (Plan P2.2). The project name is
+# pinned so a redeploy from a new directory replaces the same container.
+name: juice-shop
+services:
+  juice-shop:
+    image: bkimminich/juice-shop
+    container_name: juice-shop
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/logs:/juice-shop/logs   # data/logs next to this file; the agent tails it
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"

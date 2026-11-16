@@ -1,0 +1,58 @@
+# Tracked settings the pipeline reads (Plan §2.2). Loaded by cjp.config.settings()
+# and checked by cjp.config.validate() before every command (Plan P2.10).
+# What belongs here is part of the method (models, request parameters, prices,
+# scoring); what belongs to one machine (VM host, credentials, paths) stays in
+# .env (documented in .env.example).
+
+# Claude models (Plan P2.10). Experiment condition IDs end in an alias
+# (…__FA__sonnet, …__haiku). Each alias names one model ID, from the Anthropic
+# models list (never guessed), and the request parameters that model accepts:
+# they differ by model, and a parameter a model rejects is a 400. `cjp doctor`
+# checks each ID and its effort setting against the Models API (no tokens).
+models:
+  sonnet:                          # triage model (decision 003)
+    id: claude-sonnet-5-5
+    thinking: {type: between_tools}   # thinking off; Sonnet 5.5 returns a 400 for "disabled"
+    effort: high                      # between_tools allows high or below
+  haiku:                           # X3 cheaper model; the dated ID pins the snapshot
+    id: claude-haiku-4-5-20251001
+    # No thinking field (off by default) and no effort: Haiku 4.5 does not
+    # support effort (Models API, 1 Oct). Structured outputs: supported.
+
+# cjp triage and cjp experiment run. `model` is an alias above; the
+# CJP_TRIAGE_MODEL environment variable overrides it for one shell (an alias
+# or one of the IDs above). No sampling parameter is sent (decision 003).
+triage:
+  model: sonnet
+  max_tokens: 1024
+
+# Claude API client. The SDK retries connection errors, 408, 409, 429 and
+# 5xx itself, with exponential backoff that honours retry-after; this sets how
+# often. A call that still fails is written as an api_error row, which
+# --resume retries, and three in a row stop the batch (cjp/triage/batch.py).
+api:
+  max_retries: 6
+  timeout_seconds: 120
+
+# Anthropic first-party API list prices, USD per million tokens (MTok).
+# Cost per alert = input_tokens × input + output_tokens × output, at list
+# price, whether or not the answer came from the response cache: it is what
+# the answer costs to obtain, not what this re-run billed. A model missing
+# here is reported as unpriced, never guessed.
+prices:
+  source: https://platform.claude.com/docs/en/about-claude/pricing
+  retrieved: 2026-10-01
+  usd_per_mtok:
+    claude-sonnet-5-5: {input: 2.00, output: 10.00}   # triage model (decision 003)
+    claude-sonnet-5: {input: 2.00, output: 10.00}     # legacy runs; launch price made standard, no rise on 1 Sep
+    claude-haiku-4-5: {input: 1.00, output: 5.00}     # alias of the dated ID below
+    claude-haiku-4-5-20251001: {input: 1.00, output: 5.00}   # X3 cheaper model; responses name this ID
+
+# Uncertainty (Plan M7). Percentile bootstrap over distinct requests: every
+# alert raised by the same request, every repeat of it and the same request
+# in another session of a corpus are resampled together (decision 006).
+# Frozen with tag prereg-C1.
+scoring:
+  bootstrap_resamples: 2000
+  bootstrap_seed: 0
+  ci_level: 0.95

@@ -1,0 +1,15 @@
+# wazuh-logtest cases run by deploy.sh before any manager restart (Plan P2.2).
+# Format: <rule id>:<level>:<decoder><TAB><log line>. `wazuh-logtest -U` exits 0
+# only if the line ends on exactly that rule, level and decoder. Lines are real:
+# each fired this rule in legacy session_20260916_095620. Add a case here with
+# every rule change: one line that should fire, one that should not.
+#
+# S3-body-field: custom decoder + rules (decoders/, rules/)
+100011:7:body-field-probe	body_probe cid=wp1-20260916_095620-4-9 ip=::1 method=POST path=/rest/user/login status=200 body="%7B%22email%22%3A%22%27%20OR%201%3D1--%20UNION%20SELECT%20username%2C%20password%20FROM%20Users--%22%2C%22password%22%3A%22x%22%7D"
+100012:5:body-field-probe	body_probe cid=wp1-20260916_095620-1-1 ip=::1 method=GET path=/rest/basket/1 status=401 body=""
+# a plain 200 decodes but stays on the silent parent (level 0, never indexed)
+100010:0:body-field-probe	body_probe cid=wp1-20260916_095620-2-1 ip=::1 method=GET path=/etc/passwd status=200 body=""
+# S1-plain and S2-body-in-url: stock rules on apache lines, unaffected by the custom files
+31101:5:web-accesslog	::ffff:172.19.0.1 - - [16/Sep/2026:09:56:20 +0000] "GET /rest/basket/1 HTTP/1.1" 401 - "wp1-20260916_095620-1-1" "curl/8.5.0"
+31106:6:web-accesslog	::ffff:172.19.0.1 - - [16/Sep/2026:09:56:58 +0000] "GET /rest/products/search?q=%3Cscript%3Ealert(1)%3C%2Fscript%3E HTTP/1.1" 200 30 "wp1-20260916_095620-6-1" "curl/8.5.0"
+31104:6:web-accesslog	::1 - - [16/Sep/2026:09:56:28 +0000] "GET /ftp/%2e%2e%2fetc%2fpasswd HTTP/1.1" 403 3019 "wp1-20260916_095620-2-3" "curl/8.5.0"

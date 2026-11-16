@@ -1,0 +1,47 @@
+# Expert rating rubric for X5 / WP5′ (Plan Appendix D, P7; METHODS §7).
+#
+# Pre-registered with tag prereg-C1 as a draft: the items, scales and the
+# analysis are frozen. The anchor wording of each item may be refined once,
+# with the second rater, in the 6-item calibration round (Plan P7.2), before any
+# independent rating. That round's items are excluded from analysis, and any
+# change is recorded in a decision record and a version bump here.
+#
+# R2's anchors are quoted since decision 019 (P6.6): unquoted, YAML read
+# `no`/`yes` as booleans and split the text at its commas. The words are
+# the pre-registered ones; only the quoting changed.
+
+version: 1
+
+items:
+  R1:
+    name: Action
+    question: Is the recommended action correct and specific enough to carry out?
+    scale: [1, 5]
+    anchors: {1: wrong or harmful, 3: right but vague, 5: right and specific}
+    reference: rubric/expected_decisions.yaml `reference_actions` for the item's true label
+  R2:
+    name: Actionability
+    question: Could a junior analyst act on this without opening the raw logs?
+    scale: [1, 5]
+    anchors: {1: 'no, needs the raw logs to do anything', 3: partly, 5: 'yes, everything needed is here'}
+  R3:
+    name: Added value
+    question: >-
+      Does it add anything beyond what the raw alert already says, rather than
+      restating it? Are the evidence claims accurate?
+    scale: [1, 5]
+    anchors: {1: restates the alert or claims evidence that isn't there, 3: some added context, 5: accurate and adds context an analyst needs}
+  R4:
+    name: Confidence fit
+    question: Does the stated confidence match the strength of the evidence shown?
+    scale: [1, 5]
+    anchors: {1: badly over- or under-confident, 3: roughly right, 5: matches the evidence}
+  R5:
+    name: Own decision
+    question: Based on this output alone, would you escalate, dismiss, or need more info?
+    scale: [escalate, dismiss_false_positive, needs_more_info]
+
+# Raters see the alert and the output only: no condition, model, format name,
+# ground truth or correctness. Items carry opaque IDs; the key file stays with
+# Jesse until both raters finish.
+blind: true

@@ -1,0 +1,117 @@
+# Expected decision per technique label (Plan Appendix E, P4; decision 011).
+#
+# Written before any X-run output existed (3 Oct 2026; no triage run on C1 or
+# C1-inj had been made). Frozen with tag prereg-C1: a later change needs a
+# decision record, and results then report both versions (Plan §2.5).
+#
+# What reads it:
+#   - cjp/evaluate/score.py: `acceptable_severity` scores Format A's
+#     `severity` field on attack alerts (severity agreement, a secondary
+#     metric). `expected_disposition` must agree with decision 006 rule 3
+#     (attack → escalate, benign → dismiss_false_positive); the scorer refuses
+#     the file otherwise, so the two can't drift apart.
+#   - P7 raters: `reference_actions` anchors rubric item R1 (Appendix D). It is
+#     never matched against the model's text: keyword matching is the lenient
+#     post-hoc scoring the audit criticised (A4.6).
+#
+# Severity means what the prompt asks for: "potential impact if the activity is
+# what it appears to be", so it doesn't depend on whether this request
+# succeeded. Each label has an anchor level and a band of two adjacent levels,
+# so a defensible neighbouring answer isn't scored wrong. Anchors follow the
+# impact the technique can have when it works:
+#   critical  code execution, or read/write access to the whole data store
+#   high      confidentiality or integrity breach beyond one record: files,
+#             credentials, internal hosts, account takeover
+#   medium    one user's data or session, or one record changed
+#   low       reconnaissance or redirection; nothing obtained by itself
+
+version: 1
+
+source_notes: >-
+  Severity anchors combine the impact categories of NIST SP 800-61 Rev. 3
+  (2025, https://csrc.nist.gov/pubs/sp/800/61/r3/final) with the impact each OWASP Top 10:2025 category
+  describes for the technique. They are the researchers' judgement informed
+  by that guidance, not values copied from it. Every attack in the testbed is
+  real malicious traffic, so every attack label expects `escalate`, including
+  reconnaissance that mostly fails (forced browsing, enumeration); METHODS §8
+  states this as a limitation. Benign traffic expects `dismiss_false_positive`
+  and has no severity to score. Citation checked by Jesse, 3 Oct 2026.
+
+severity_levels: [low, medium, high, critical]   # ascending; the gap to the band is counted in these steps
+
+labels:
+  sql_injection:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [block or rate-limit the source, check database and authentication logs for queries that succeeded, review the endpoint for parameterised queries]
+  xss:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [check whether the payload was stored or reflected, check output encoding on the field, look for victim sessions that loaded it]
+  os_command_injection:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [isolate the host, check process and outbound connection logs, block the source]
+  path_traversal:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [check whether the response returned file content, rotate any secrets the file could hold, fix path normalisation]
+  idor:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [confirm the object belongs to another user, check for sequential access to other IDs, enforce object-level authorisation]
+  user_impersonation:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [identify the records written under another user, revert them, enforce server-side ownership of the user field]
+  ssrf:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [check what internal address was fetched, review outbound requests from the server, restrict URL fetching to an allow-list]
+  csrf:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [identify the state change and the victim account, check the referring site, enforce anti-CSRF tokens]
+  open_redirect:
+    expected_disposition: escalate
+    acceptable_severity: [low, medium]
+    reference_actions: [check the redirect target, look for phishing links that use it, restrict redirects to known destinations]
+  sensitive_data_exposure:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [identify which files were returned, assess what data they contain, remove public access and notify the data owner]
+  security_misconfiguration:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [check what the exposed endpoint returned, restrict or remove it, look for other requests from the source]
+  xxe:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [check for file content or outbound requests in the response, disable external entities in the parser, block the source]
+  forced_browsing:
+    expected_disposition: escalate
+    acceptable_severity: [low, medium]
+    reference_actions: [check which requested paths returned 2xx, rate-limit or block the scanning source, remove anything found that should not be public]
+  brute_force:
+    expected_disposition: escalate
+    acceptable_severity: [medium, high]
+    reference_actions: [check for a successful login after the failures, lock or rate-limit the targeted account, block the source]
+  weak_credentials:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [treat the account as compromised and reset its password, review its session activity, enforce a password policy]
+  account_enumeration:
+    expected_disposition: escalate
+    acceptable_severity: [low, medium]
+    reference_actions: [rate-limit the endpoint, make responses for unknown and known users identical, watch the enumerated accounts for follow-up attacks]
+  improper_input_validation:
+    expected_disposition: escalate
+    acceptable_severity: [low, medium]
+    reference_actions: [check whether the out-of-range value was accepted and stored, revert affected records, add server-side validation]
+  insecure_deserialization:
+    expected_disposition: escalate
+    acceptable_severity: [high, critical]
+    reference_actions: [isolate the host, check for code execution, reject untrusted serialised input]
+
+benign:
+  expected_disposition: dismiss_false_positive
